@@ -15,7 +15,7 @@ const ListPage = async () => {
               <h4 className='font-extrabold m-0 text-xl'>{a.title}</h4>
             </Link>
             <p className='bg-gray-50 m-[5px 0px'>{a.content}</p>
-            <DetailLink href={`detail/${a._id.toString()}`}></DetailLink>
+            <DetailLink href={`modify/${a._id.toString()}`}></DetailLink>
           </div>
         </div>
       ))}

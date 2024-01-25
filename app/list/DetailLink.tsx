@@ -14,7 +14,7 @@ const DetailLink = ({ href }: Props) => {
         router.push(href);
       }}
     >
-      버튼
+      수정하기
     </button>
   );
 };
