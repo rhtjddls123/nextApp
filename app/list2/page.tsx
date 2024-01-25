@@ -2,8 +2,7 @@ import { connectDB } from '@/util/database';
 import { postType } from '@/util/typs';
 import ListItem from './ListItem';
 
-export const dynamic = 'force-dynamic';
-
+export const revalidate = 10;
 const ListPage = async () => {
   const db = (await connectDB).db('forum');
   const result = (await db.collection('post').find().toArray()) as postType[];
