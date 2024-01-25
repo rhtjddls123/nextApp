@@ -10,9 +10,14 @@ export default async function handler(
 
   if (req.method === 'POST') {
     const data: postType = req.body;
-    if (data.title && data.content) {
-      const result = await db.collection('post').insertOne(req.body);
-      return res.status(200).json(result);
+    if (!data.title || !data.content) {
+      return res.status(500).json('제목과 내용을 입력해주세요');
+    }
+    try {
+      await db.collection('post').insertOne(req.body);
+      return res.redirect(302, '/list');
+    } catch {
+      return res.status(500).json('오류가 발생했습니다.');
     }
   }
 }
