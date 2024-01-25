@@ -4,6 +4,7 @@ export type postType = {
   _id: ObjectId;
   title: string;
   content: string;
+  author: string;
 };
 
 export type joinType = {
