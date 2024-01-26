@@ -3,8 +3,10 @@ import { getServerSession } from 'next-auth';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
+import AuthSession from './AuthSession';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
+import RegisterButton from './RegisterButton';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,18 +25,23 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <div>
-          <Link href={'/list'}>List</Link>
-          {session ? (
-            <div>
-              {session.user?.name}
-              <LogoutButton />
-            </div>
-          ) : (
-            <LoginButton />
-          )}
-        </div>
-        {children}
+        <AuthSession>
+          <div>
+            <Link href={'/list'}>List</Link>
+            {session ? (
+              <div>
+                {session.user?.name}
+                <LogoutButton />
+              </div>
+            ) : (
+              <>
+                <LoginButton />
+                <RegisterButton />
+              </>
+            )}
+          </div>
+          {children}
+        </AuthSession>
       </body>
     </html>
   );

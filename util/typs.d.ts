@@ -12,3 +12,10 @@ export type joinType = {
   id: string;
   password: string;
 };
+
+export type registerType = {
+  _id: ObjectId;
+  name: string;
+  email: string;
+  password: string;
+};
