@@ -1,8 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const url =
-  'mongodb+srv://admin:kotjddls1@cluster0.1pxgydp.mongodb.net/forum?retryWrites=true&w=majority';
-const options = { useNewUrlParser: true };
+const url = process.env.DB_URL || '';
 let connectDB: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === 'development') {

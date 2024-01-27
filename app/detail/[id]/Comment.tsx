@@ -25,7 +25,6 @@ const Comment = ({ parentId }: Props) => {
       .then((r: commentType[]) => {
         setComment(r);
       });
-    console.log('1');
   }, [parentId, render]);
 
   return (

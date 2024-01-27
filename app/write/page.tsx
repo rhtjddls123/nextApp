@@ -1,9 +1,18 @@
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+// 'use client';
+import aws from 'aws-sdk';
 import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ImageUpload from './ImageUpload';
 
-const WritePage = async () => {
-  const session = await getServerSession(authOptions);
+const WritePage = () => {
+  // const [src, setSrc] = useState('');
+  // const [res, setRes] = useState<aws.S3.PresignedPost>();
+
+  const session = getServerSession();
+
   if (!session) {
     redirect('api/auth/signin');
   }
@@ -23,12 +32,7 @@ const WritePage = async () => {
           placeholder='글내용'
           className=' box-border p-[10px] block mb-[10px] border border-black'
         ></input>
-        <button
-          type='submit'
-          className=' px-[10px] py-[15px] bg-gray-200 border-none roun-[5px]'
-        >
-          전송
-        </button>
+        <ImageUpload></ImageUpload>
       </form>
     </div>
   );

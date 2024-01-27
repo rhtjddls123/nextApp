@@ -10,8 +10,8 @@ import GithubProvider from 'next-auth/providers/github';
 export const authOptions = {
   providers: [
     GithubProvider({
-      clientId: '764162d8349d04a2830d',
-      clientSecret: '784de3b94afeb961a91b071b09d2106a09a666d2',
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
     }),
     CredentialsProvider({
       //1. 로그인페이지 폼 자동생성해주는 코드
@@ -89,7 +89,7 @@ export const authOptions = {
       return session;
     },
   },
-  secret: 'forumJWTpassword',
+  secret: process.env.AUTH_SECRET,
   adapter: MongoDBAdapter(connectDB),
 };
 export default NextAuth(authOptions);

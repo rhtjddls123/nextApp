@@ -5,6 +5,7 @@ export type postType = {
   title: string;
   content: string;
   author: string;
+  img?: string;
 };
 
 export type joinType = {
