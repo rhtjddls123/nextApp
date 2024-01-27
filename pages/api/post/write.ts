@@ -12,7 +12,7 @@ export default async function handler(
 
   if (req.method === 'POST' && session && session.user?.email) {
     const db = (await connectDB).db('forum');
-    const data: postType & { author: string } = req.body;
+    const data: postType = req.body;
     data.author = session.user.email;
     if (!data.title || !data.content) {
       return res.status(500).json('제목과 내용을 입력해주세요');

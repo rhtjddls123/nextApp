@@ -15,7 +15,7 @@ const ModifyPage = async ({ params }: Props) => {
   return (
     <div className=' p-[20px]'>
       <h4>수정페이지</h4>
-      <form action={'/api/put/modify'} method='POST'>
+      <form action={'/api/post/modify'} method='POST'>
         <input
           name='_id'
           defaultValue={result._id.toString()}

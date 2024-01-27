@@ -24,7 +24,7 @@ const ListItem = ({ data }: Props) => {
             <DetailLink href={`modify/${a._id.toString()}`}></DetailLink>
             <button
               onClick={(e) => {
-                fetch('api/delete/postDelete', {
+                fetch('api/post/delete', {
                   method: 'DELETE',
                   body: JSON.stringify(a._id),
                 })
