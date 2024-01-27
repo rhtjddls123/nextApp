@@ -13,12 +13,14 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions);
     const db = (await connectDB).db('forum');
     const data: postType = JSON.parse(req.body);
-
     const find = (await db
       .collection('post')
       .findOne({ _id: new ObjectId(data._id) })) as postType;
 
-    if (find.author === session?.user?.email) {
+    if (
+      find.author === session?.user?.email ||
+      session?.user.role === 'admin'
+    ) {
       await db.collection('post').deleteOne({ _id: new ObjectId(data._id) });
       return res.status(200).json('삭제완료');
     } else {

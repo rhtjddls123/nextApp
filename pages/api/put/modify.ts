@@ -22,7 +22,10 @@ export default async function handler(
       .findOne({ _id: new ObjectId(data._id) })) as postType;
 
     try {
-      if (find.author === session?.user?.email) {
+      if (
+        find.author === session?.user?.email ||
+        session?.user.role === 'admin'
+      ) {
         await db
           .collection('post')
           .updateOne(

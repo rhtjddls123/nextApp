@@ -30,7 +30,9 @@ export const authOptions = {
         const db = (await connectDB).db('forum');
         const user = (await db
           .collection('user_cred')
-          .findOne({ email: credentials.email })) as registerType;
+          .findOne({ email: credentials.email })) as registerType & {
+          role?: string | null;
+        };
         if (!user) {
           console.log('해당 이메일은 없음');
           return null;
@@ -43,10 +45,11 @@ export const authOptions = {
           console.log('비번틀림');
           return null;
         }
-        const returnUser: User = {
+        const returnUser: User & { role?: string | null } = {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
+          role: user.role,
         };
         return returnUser;
       },
@@ -61,10 +64,17 @@ export const authOptions = {
   callbacks: {
     //4. jwt 만들 때 실행되는 코드
     //user변수는 DB의 유저정보담겨있고 token.user에 뭐 저장하면 jwt에 들어갑니다.
-    jwt: async ({ token, user }: { token: JWT; user: User }) => {
+    jwt: async ({
+      token,
+      user,
+    }: {
+      token: JWT;
+      user: User & { role?: string | null };
+    }) => {
       if (user) {
         token.name = user.name;
         token.email = user.email;
+        token.role = user.role;
       }
       return token;
     },
@@ -74,6 +84,7 @@ export const authOptions = {
         name: token.name,
         email: token.email,
         image: token.picture,
+        role: token.role,
       };
       return session;
     },

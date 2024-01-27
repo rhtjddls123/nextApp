@@ -23,7 +23,8 @@ const ListItem = ({ data, session }: Props) => {
               <h4 className='font-extrabold m-0 text-xl'>{a.title}</h4>
             </Link>
             <p className='bg-gray-50 m-[5px 0px'>{a.content}</p>
-            {a.author === session?.user?.email && (
+            {(a.author === session?.user?.email ||
+              session?.user?.role === 'admin') && (
               <>
                 <DetailLink href={`modify/${a._id.toString()}`}></DetailLink>
                 <button
