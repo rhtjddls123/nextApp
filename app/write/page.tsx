@@ -1,18 +1,11 @@
 // 'use client';
-import aws from 'aws-sdk';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import ImageUpload from './ImageUpload';
 
-const WritePage = () => {
-  // const [src, setSrc] = useState('');
-  // const [res, setRes] = useState<aws.S3.PresignedPost>();
-
-  const session = getServerSession();
-
+const WritePage = async () => {
+  const session = await getServerSession(authOptions);
   if (!session) {
     redirect('api/auth/signin');
   }
