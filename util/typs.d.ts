@@ -19,3 +19,10 @@ export type registerType = {
   email: string;
   password: string;
 };
+
+export type commentType = {
+  _id: ObjectId;
+  comment: string;
+  author: string;
+  parentId: ObjectId;
+};
