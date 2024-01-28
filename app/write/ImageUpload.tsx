@@ -1,6 +1,7 @@
 'use client';
 
 import { SignedPostPolicyV4Output } from '@google-cloud/storage';
+import { v4 } from 'uuid';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -8,6 +9,7 @@ const ImageUpload = () => {
   const [src, setSrc] = useState('');
   const [file, setFile] = useState<File>();
   const [res, setRes] = useState<SignedPostPolicyV4Output>();
+  const [uuid] = useState<string>(v4());
   const formData = new FormData();
   return (
     <>
@@ -19,13 +21,10 @@ const ImageUpload = () => {
           if (e.target.files) {
             const f = e.target.files[0];
             setFile(f);
-            const filename = encodeURIComponent(f.name);
-            const result = await fetch(`/api/post/image?file=${filename}`);
+            const result = await fetch(`/api/post/image?file=${uuid}`);
             const tmp: SignedPostPolicyV4Output = await result.json();
             setRes(tmp);
             setSrc(URL.createObjectURL(f));
-
-            // S3 업로드
           }
         }}
       ></input>
@@ -41,7 +40,7 @@ const ImageUpload = () => {
       {res && file && (
         <input
           name='img'
-          value={`${res.url}${encodeURIComponent(file.name)}`}
+          value={`${res.url}${uuid}`}
           className=' hidden'
         ></input>
       )}
