@@ -19,6 +19,9 @@ export type registerType = {
   name: string;
   email: string;
   password: string;
+  passwordCheck: string;
+  birthDate?: number;
+  phoneNumber?: string;
 };
 
 export type commentType = {

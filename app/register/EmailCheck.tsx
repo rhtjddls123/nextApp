@@ -1,22 +1,21 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { registerType } from '@/util/typs';
 import { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
 
-type register = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 type Props = {
-  register: UseFormRegister<register>;
-  watch: UseFormWatch<register>;
-  errors: FieldErrors<register>;
+  register: UseFormRegister<registerType>;
+  watch: UseFormWatch<registerType>;
+  errors: FieldErrors<registerType>;
   setSubmitBtn: Dispatch<SetStateAction<boolean>>;
 };
 
 const EmailCheck = ({ register, watch, errors, setSubmitBtn }: Props) => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const handler = (data: string) => {
     if (!errors.email && data) {
       fetch('api/auth/userGet', {
@@ -41,28 +40,32 @@ const EmailCheck = ({ register, watch, errors, setSubmitBtn }: Props) => {
   };
   return (
     <>
-      <div>
-        <input
+      <div className=' flex items-center'>
+        <Input
           type='text'
           placeholder='이메일'
-          className=' border border-black p-2 m-2 w-44'
+          className='my-2 mr-2 border-gray-400'
           {...register('email', {
             required: '이메일을 입력해주세요',
           })}
         />
-        <button
+        <Button
+          variant={'outline'}
           type='button'
           onClick={() => {
-            handler(watch().email);
+            if (emailRegex.test(watch().email)) handler(watch().email);
           }}
-          className=' border border-black rounded-md w-fit p-2'
+          className=' border-gray-400 w-fit p-2'
         >
           중복확인
-        </button>
+        </Button>
       </div>
-      {!watch().email && (
+      {(!watch().email && (
         <small className='  text-red-400'>이메일을 입력해주세요</small>
-      )}
+      )) ||
+        (!emailRegex.test(watch().email) && (
+          <small className='  text-red-400'>이메일을 바르게 입력해주세요</small>
+        ))}
     </>
   );
 };

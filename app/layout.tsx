@@ -4,9 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import AuthSession from './AuthSession';
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
-import RegisterButton from './RegisterButton';
+import Menu from './_components/Menu/Menu';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,18 +25,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthSession>
           <div>
-            <Link href={'/list'}>List</Link>
-            {session ? (
-              <div>
-                {session.user?.name}
-                <LogoutButton />
-              </div>
-            ) : (
-              <>
-                <LoginButton />
-                <RegisterButton />
-              </>
-            )}
+            <Menu></Menu>
           </div>
           {children}
         </AuthSession>
