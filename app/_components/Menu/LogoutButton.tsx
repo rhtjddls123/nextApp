@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
 import React from 'react';
 
-const LogoutButton = () => {
+type Props = {
+  className?: string;
+};
+
+const LogoutButton = ({ className }: Props) => {
   return (
-    <Button variant={'outline'} onClick={() => signOut()}>
+    <Button variant={'outline'} onClick={() => signOut()} className={className}>
       로그아웃
     </Button>
   );

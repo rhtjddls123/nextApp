@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 import { Navigation } from './Navigation';
+import { ProfilePopover } from './Profile/ProfilePopover';
 import RegisterButton from './RegisterButton';
 
 const Menu = async () => {
@@ -13,7 +14,7 @@ const Menu = async () => {
       <Navigation></Navigation>
       {session?.user ? (
         <>
-          <LogoutButton></LogoutButton>
+          <ProfilePopover></ProfilePopover>
         </>
       ) : (
         <>
