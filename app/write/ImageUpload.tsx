@@ -1,13 +1,13 @@
 'use client';
 
-import aws from 'aws-sdk';
+import { SignedPostPolicyV4Output } from '@google-cloud/storage';
 import Image from 'next/image';
 import { useState } from 'react';
 
 const ImageUpload = () => {
   const [src, setSrc] = useState('');
   const [file, setFile] = useState<File>();
-  const [res, setRes] = useState<aws.S3.PresignedPost>();
+  const [res, setRes] = useState<SignedPostPolicyV4Output>();
   const formData = new FormData();
   return (
     <>
@@ -21,7 +21,7 @@ const ImageUpload = () => {
             setFile(f);
             const filename = encodeURIComponent(f.name);
             const result = await fetch(`/api/post/image?file=${filename}`);
-            const tmp: aws.S3.PresignedPost = await result.json();
+            const tmp: SignedPostPolicyV4Output = await result.json();
             setRes(tmp);
             setSrc(URL.createObjectURL(f));
 
@@ -41,7 +41,7 @@ const ImageUpload = () => {
       {res && file && (
         <input
           name='img'
-          value={`${res.url}/${encodeURIComponent(file.name)}`}
+          value={`${res.url}${encodeURIComponent(file.name)}`}
           className=' hidden'
         ></input>
       )}

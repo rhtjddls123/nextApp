@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/myforumimage0605/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/myforumimage0605/**',
+      },
     ],
   },
 };

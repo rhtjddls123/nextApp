@@ -1,26 +1,25 @@
-import aws from 'aws-sdk';
+import { Storage } from '@google-cloud/storage';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  aws.config.update({
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_KEY,
-    region: 'ap-northeast-2',
-    signatureVersion: 'v4',
+  const storage = new Storage({
+    projectId: process.env.PROJECT_ID,
+    credentials: {
+      client_email: process.env.CLIENT_EMAIL,
+      private_key: process.env.PRIVATE_KEY,
+    },
   });
 
-  const s3 = new aws.S3();
-  const url = await s3.createPresignedPost({
-    Bucket: process.env.BUCKET_NAME,
-    Fields: { key: req.query.file },
-    Expires: 60, // seconds
-    Conditions: [
-      ['content-length-range', 0, 1048576], //파일용량 1MB 까지 제한
-    ],
-  });
+  const bucket = storage.bucket(process.env.BUCKET_NAME || '');
+  const file = bucket.file(req.query.file as string);
+  const options = {
+    expires: Date.now() + 1 * 60 * 1000, //  1 minute,
+    fields: { 'x-goog-meta-test': 'data' },
+  };
 
-  res.status(200).json(url);
+  const [response] = await file.generateSignedPostPolicyV4(options);
+  res.status(200).json(response);
 }
