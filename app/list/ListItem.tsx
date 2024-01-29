@@ -3,7 +3,7 @@
 import { postType } from '@/util/typs';
 import { Session } from 'next-auth';
 import Link from 'next/link';
-// import { useState } from 'react';
+import DeleteButton from './DeleteButton';
 import DetailLink from './DetailLink';
 
 type Props = {
@@ -27,33 +27,7 @@ const ListItem = ({ data, session }: Props) => {
               session?.user?.role === 'admin') && (
               <>
                 <DetailLink href={`modify/${a._id.toString()}`}></DetailLink>
-                <button
-                  onClick={(e) => {
-                    fetch('api/post/delete', {
-                      method: 'DELETE',
-                      body: JSON.stringify(a),
-                    })
-                      .then((r) => {
-                        if (r.status === 200) {
-                          return r.json();
-                        } else {
-                          throw new Error();
-                        }
-                      })
-                      .then(() => {
-                        const target = e.target as HTMLElement;
-                        if (target.parentElement)
-                          target.parentElement.style.opacity = '0';
-                        setTimeout(() => {
-                          if (target.parentElement)
-                            target.parentElement.style.display = 'none';
-                        }, 1000);
-                      })
-                      .catch((e) => e);
-                  }}
-                >
-                  삭제하기
-                </button>
+                <DeleteButton data={a}></DeleteButton>
               </>
             )}
             <p>{a.author}</p>
