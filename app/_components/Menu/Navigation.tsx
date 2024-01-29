@@ -2,18 +2,18 @@
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 export function Navigation() {
+  const router = useRouter();
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -25,11 +25,15 @@ export function Navigation() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href='/list' legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              게시글 목록
-            </NavigationMenuLink>
-          </Link>
+          <button
+            className={navigationMenuTriggerStyle()}
+            onClick={() => {
+              router.push('/list');
+              router.refresh();
+            }}
+          >
+            게시글 목록
+          </button>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href='/write' legacyBehavior passHref>

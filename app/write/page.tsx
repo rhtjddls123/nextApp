@@ -1,31 +1,71 @@
-// 'use client';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { postType } from '@/util/typs';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import ImageUpload from './ImageUpload';
 
-const WritePage = async () => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect('api/auth/signin');
-  }
+const WritePage = () => {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<postType>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handler = (data: postType) => {
+    setIsSubmitting(true);
+    fetch('/api/post/write', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: data.title,
+        content: data.content,
+        img: data.img,
+      }),
+    })
+      .then(async (r) => {
+        setIsSubmitting(false);
+        if (r.status === 200) {
+          return r.json();
+        }
+        throw new Error(await r.json());
+      })
+      .then(() => {
+        router.push('/list');
+        router.refresh();
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  };
 
   return (
-    <div className=' p-[20px]'>
-      <form action={'/api/post/write'} method='POST'>
-        title:{' '}
-        <input
-          name='title'
-          placeholder='글제목'
-          className=' box-border p-[10px] block mb-[10px] border border-black'
-        ></input>
-        content:{' '}
-        <input
-          name='content'
-          placeholder='글내용'
-          className=' box-border p-[10px] block mb-[10px] border border-black'
-        ></input>
-        <ImageUpload></ImageUpload>
+    <div className=' p-[20px] w-3/4 h-[90%] absolute -translate-x-1/2 left-1/2'>
+      <form
+        onSubmit={handleSubmit((data) => {
+          handler(data);
+        })}
+        className='h-full flex flex-col'
+      >
+        <Input
+          placeholder={'제목을 입력해주세요'}
+          className=' p-[10px] mb-[10px] border-2 grow'
+          {...register('title', {
+            required: true,
+          })}
+        ></Input>
+        <hr></hr>
+        <Textarea
+          placeholder={'내용을 입력해주세요'}
+          className='resize-none border-2 grow-[120]'
+          {...register('content', {
+            required: true,
+          })}
+        />
+        <ImageUpload
+          register={register}
+          isSubmitting={isSubmitting}
+        ></ImageUpload>
       </form>
     </div>
   );

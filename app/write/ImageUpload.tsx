@@ -1,18 +1,26 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { postType } from '@/util/typs';
 import { SignedPostPolicyV4Output } from '@google-cloud/storage';
+import { UseFormRegister } from 'react-hook-form';
 import { v4 } from 'uuid';
 import Image from 'next/image';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-const ImageUpload = () => {
+type Props = {
+  register: UseFormRegister<postType>;
+  isSubmitting: boolean;
+};
+
+const ImageUpload = ({ register, isSubmitting }: Props) => {
   const [src, setSrc] = useState('');
   const [file, setFile] = useState<File>();
   const [res, setRes] = useState<SignedPostPolicyV4Output>();
   const [uuid] = useState<string>(v4());
   const formData = new FormData();
   return (
-    <>
+    <div>
       <input
         type='file'
         accept='image/*'
@@ -24,7 +32,8 @@ const ImageUpload = () => {
             const result = await fetch(`/api/post/image?file=${uuid}`);
             const tmp: SignedPostPolicyV4Output = await result.json();
             setRes(tmp);
-            setSrc(URL.createObjectURL(f));
+            if (f) setSrc(URL.createObjectURL(f));
+            else setSrc('');
           }
         }}
       ></input>
@@ -34,19 +43,21 @@ const ImageUpload = () => {
           width={400}
           height={400}
           alt='img'
-          className=' h-[300px] w-auto'
+          className=' h-[100px] w-auto'
         ></Image>
       )}
       {res && file && (
         <input
-          name='img'
           value={`${res.url}${uuid}`}
           className=' hidden'
+          {...register('img')}
         ></input>
       )}
-      <button
+      <Button
+        variant={'secondary'}
         type='submit'
-        className=' px-[10px] py-[15px] bg-gray-200 border-none roun-[5px]'
+        className=' px-[10px] py-[15px]'
+        disabled={isSubmitting}
         onClick={async () => {
           if (res && file) {
             Object.entries({ ...res.fields, file }).forEach(([key, value]) => {
@@ -60,8 +71,8 @@ const ImageUpload = () => {
         }}
       >
         전송
-      </button>
-    </>
+      </Button>
+    </div>
   );
 };
 
