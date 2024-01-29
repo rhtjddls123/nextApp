@@ -13,14 +13,13 @@ export default async function handler(
 
   if (req.method === 'POST') {
     const session = await getServerSession(req, res, authOptions);
-    const data: postType = req.body;
+    const data: postType = JSON.parse(req.body);
     if (!data.title || !data.content) {
       return res.status(500).json('제목과 내용을 입력해주세요');
     }
     const find = (await db
       .collection('post')
       .findOne({ _id: new ObjectId(data._id) })) as postType;
-
     try {
       if (
         find.author === session?.user?.email ||
@@ -32,9 +31,9 @@ export default async function handler(
             { _id: new ObjectId(data._id) },
             { $set: { title: data.title, content: data.content } }
           );
-        return res.redirect(302, '/list');
+        return res.status(200).json('성공');
       } else {
-        return res.redirect(302, '/list');
+        return res.status(409).json('실패');
       }
     } catch {
       return res.status(500).json('오류가 발생했습니다.');
