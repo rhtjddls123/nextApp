@@ -1,10 +1,9 @@
-import { TextArea } from './write/_components/TextArea';
+import { Panel } from './Panel';
 
 export default async function Home() {
   return (
-    <div>
-      안녕
-      <TextArea></TextArea>
+    <div className=' h-full'>
+      <Panel></Panel>
     </div>
   );
 }

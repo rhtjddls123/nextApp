@@ -18,12 +18,13 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   return (
     <html lang='en'>
+      <head></head>
       <body className={' h-screen'}>
         <AuthSession>
-          <div>
+          <div className=' fixed bg-gray-400 z-10 h-[10%] w-full flex items-center justify-center top-0'>
             <Menu></Menu>
           </div>
-          {children}
+          <div className=' relative top-[10%] h-[90%]'>{children}</div>
         </AuthSession>
       </body>
     </html>
