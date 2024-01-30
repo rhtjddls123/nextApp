@@ -20,6 +20,8 @@ export default async function handler(
         parentId: new ObjectId(data.parentId),
       });
       return res.status(200).json('성공');
+    } else {
+      return res.status(409).json('로그인을 해주세요!');
     }
   }
 }
