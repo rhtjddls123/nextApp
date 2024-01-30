@@ -5,6 +5,7 @@ import { ObjectId } from 'mongodb';
 import Image from 'next/image';
 import React from 'react';
 import Comment from './Comment';
+import DeleteAndModify from './DeleteAndModify';
 
 type Props = {
   params: { id: string };
@@ -19,6 +20,10 @@ const DetailPage = async ({ params }: Props) => {
     <div className=' pt-[20px] px-[20px] w-3/4 h-[100%] absolute -translate-x-1/2 left-1/2'>
       <div className='h-full flex flex-col'>
         <ScrollArea>
+          <DeleteAndModify
+            href={`/modify/${params.id}`}
+            deleteData={JSON.stringify(result)}
+          ></DeleteAndModify>
           <div className=' p-[10px] mb-[10px] border-2 grow flex h-10 w-full rounded-md bg-background px-3 py-2 text-sm ring-offset-background'>
             {result.title}
           </div>

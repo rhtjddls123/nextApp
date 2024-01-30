@@ -37,7 +37,7 @@ const Modify = ({ result }: Props) => {
         throw new Error(await r.json());
       })
       .then(() => {
-        router.push('/list');
+        router.back();
         router.refresh();
       })
       .catch((e) => {
