@@ -31,7 +31,7 @@ const WritePage = () => {
         throw new Error(await r.json());
       })
       .then(() => {
-        router.push('/list');
+        router.push('/');
         router.refresh();
       })
       .catch((e) => {
