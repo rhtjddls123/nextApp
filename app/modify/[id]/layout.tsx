@@ -5,15 +5,12 @@ import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: Readonly<{
-    children: React.ReactNode;
-  }>;
+type Props = {
+  children: React.ReactNode;
   params: { id: string };
-}) {
+};
+
+export default async function RootLayout({ children, params }: Props) {
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect('/list');
