@@ -1,4 +1,4 @@
-import { Panel } from './Panel';
+import { Panel } from './_components/Main/Panel';
 
 export default async function Home() {
   return (
