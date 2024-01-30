@@ -6,7 +6,6 @@ export type postType = {
   content: string;
   author: string;
   img?: string;
-  d: boolean;
 };
 
 export type joinType = {
@@ -23,6 +22,7 @@ export type registerType = {
   passwordCheck: string;
   birthDate?: number;
   phoneNumber?: string;
+  image?: string;
 };
 
 export type commentType = {

@@ -41,15 +41,22 @@ export const authOptions = {
           credentials.password,
           user.password
         );
+        console.log(credentials.password);
+        console.log(user.password);
+        console.log(pwcheck);
         if (!pwcheck) {
           console.log('비번틀림');
           return null;
         }
-        const returnUser: User & { role?: string | null } = {
+        const returnUser: User & {
+          role?: string | null;
+          image?: string | null;
+        } = {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
           role: user.role,
+          image: user.image,
         };
         return returnUser;
       },
@@ -75,6 +82,7 @@ export const authOptions = {
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
+        token.image = user.image;
       }
       return token;
     },
@@ -83,7 +91,7 @@ export const authOptions = {
       session.user = {
         name: token.name,
         email: token.email,
-        image: token.picture,
+        image: token.image,
         role: token.role,
       };
       return session;

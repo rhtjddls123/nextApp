@@ -29,6 +29,7 @@
     "pages/api/test.jsx",
     "pages/api/list.jsx",
     "app/lib/db.jsx",
+    "pages/api/auth",
   ],
   "exclude": ["node_modules"],
 }

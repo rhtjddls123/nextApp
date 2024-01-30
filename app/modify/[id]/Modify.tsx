@@ -9,13 +9,14 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 type Props = {
-  result: postType;
+  result: string;
 };
 
 const Modify = ({ result }: Props) => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<postType>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const postData = JSON.parse(result);
 
   const handler = (data: postType) => {
     setIsSubmitting(true);
@@ -53,13 +54,13 @@ const Modify = ({ result }: Props) => {
         className='h-full flex flex-col'
       >
         <input
-          value={result._id.toString()}
+          value={postData._id.toString()}
           className=' hidden'
           {...register('_id')}
         ></input>
         <Input
           placeholder={'제목을 입력해주세요'}
-          defaultValue={result.title}
+          defaultValue={postData.title}
           className=' p-[10px] mb-[10px] border-2 grow'
           {...register('title', {
             required: true,
@@ -68,7 +69,7 @@ const Modify = ({ result }: Props) => {
         <hr></hr>
         <Textarea
           placeholder={'내용을 입력해주세요'}
-          defaultValue={result.content}
+          defaultValue={postData.content}
           className='resize-none border-2 grow-[120]'
           {...register('content', {
             required: true,

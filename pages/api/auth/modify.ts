@@ -1,9 +1,9 @@
 import { connectDB } from '@/util/database';
-import { postType } from '@/util/typs';
+import { registerType } from '@/util/typs';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from './[...nextauth]';
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,21 +13,21 @@ export default async function handler(
 
   if (req.method === 'POST') {
     const session = await getServerSession(req, res, authOptions);
-    const data: postType = JSON.parse(req.body);
-    if (!data.title || !data.content) {
-      return res.status(500).json('제목과 내용을 입력해주세요');
+    const data: registerType = JSON.parse(req.body);
+    if (!data.name) {
+      return res.status(500).json('이름을 입력해주세요');
     }
     const find = (await db
-      .collection('post')
-      .findOne({ _id: new ObjectId(data._id) })) as postType;
+      .collection('user_cred')
+      .findOne({ _id: new ObjectId(data._id) })) as registerType;
     try {
       if (
-        find.author === session?.user?.email ||
+        find.email === session?.user?.email ||
         session?.user.role === 'admin'
       ) {
         data._id = new ObjectId(data._id);
         await db
-          .collection('post')
+          .collection('user_cred')
           .updateOne({ _id: data._id }, { $set: data });
         return res.status(200).json('성공');
       } else {

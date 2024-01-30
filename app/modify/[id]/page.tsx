@@ -13,7 +13,7 @@ const ModifyPage = async ({ params }: Props) => {
     .collection('post')
     .findOne({ _id: new ObjectId(params.id) })) as postType;
 
-  return <Modify result={result}></Modify>;
+  return <Modify result={JSON.stringify(result)}></Modify>;
 };
 
 export default ModifyPage;

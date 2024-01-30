@@ -3,12 +3,20 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { registerType } from '@/util/typs';
+import { SignedPostPolicyV4Output } from '@google-cloud/storage';
 import { useForm } from 'react-hook-form';
+import { v4 } from 'uuid';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import EmailCheck from './EmailCheck';
 
 const Register = () => {
+  const [src, setSrc] = useState('');
+  const [file, setFile] = useState<File>();
+  const [res, setRes] = useState<SignedPostPolicyV4Output>();
+  const [uuid] = useState<string>(v4());
+  const formData = new FormData();
   const [submitBtn, setSubmitBtn] = useState(false);
   const router = useRouter();
   const {
@@ -27,6 +35,7 @@ const Register = () => {
         passwordCheck: data.passwordCheck,
         birthDate: data.birthDate,
         phoneNumber: data.phoneNumber,
+        image: data.image,
       }),
     })
       .then(async (r) => {
@@ -69,6 +78,42 @@ const Register = () => {
           register={register}
           errors={errors}
         ></EmailCheck>
+        <div>
+          <div className=' flex justify-between'>
+            <input
+              type='file'
+              accept='image/*'
+              className=' p-[10px] block mb-[10px] '
+              onChange={async (e) => {
+                if (e.target.files) {
+                  const f = e.target.files[0];
+                  setFile(f);
+                  const result = await fetch(`/api/post/image?file=${uuid}`);
+                  const tmp: SignedPostPolicyV4Output = await result.json();
+                  setRes(tmp);
+                  if (f) setSrc(URL.createObjectURL(f));
+                  else setSrc('');
+                }
+              }}
+            ></input>
+            {src && (
+              <Image
+                src={src}
+                width={400}
+                height={400}
+                alt='img'
+                className=' h-[100px] w-auto'
+              ></Image>
+            )}
+          </div>
+          {res && file && (
+            <input
+              value={`${res.url}${uuid}`}
+              className=' hidden'
+              {...register('image')}
+            ></input>
+          )}
+        </div>
 
         <Input
           type='password'
@@ -144,6 +189,19 @@ const Register = () => {
           type='submit'
           className=' w-fit border-gray-400 p-2 my-2 '
           disabled={isSubmitting || !submitBtn}
+          onClick={async () => {
+            if (res && file) {
+              Object.entries({ ...res.fields, file }).forEach(
+                ([key, value]) => {
+                  formData.append(key, value);
+                }
+              );
+              await fetch(res.url, {
+                method: 'POST',
+                body: formData,
+              });
+            }
+          }}
         >
           가입요청
         </Button>
