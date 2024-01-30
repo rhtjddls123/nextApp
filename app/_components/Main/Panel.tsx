@@ -15,17 +15,17 @@ export async function Panel() {
 
   return (
     <ResizablePanelGroup direction='horizontal' className='rounded-lg border'>
-      <ResizablePanel defaultSize={20}>
+      <ResizablePanel defaultSize={0}>
         <div className='flex h-full items-center justify-center p-6 border border-black'>
           <span className='font-semibold'>One</span>
         </div>
       </ResizablePanel>
-      <ResizablePanel defaultSize={60}>
+      <ResizablePanel defaultSize={100}>
         <div className='flex h-full items-start justify-center p-6 border border-black'>
           <PostListPanel data={r}></PostListPanel>
         </div>
       </ResizablePanel>
-      <ResizablePanel defaultSize={20}>
+      <ResizablePanel defaultSize={0}>
         <div className='flex h-full items-center justify-center p-6 border border-black'>
           <span className='font-semibold'>One</span>
         </div>

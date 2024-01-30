@@ -12,7 +12,7 @@ export default async function handler(
     const db = (await connectDB).db('forum');
     const data: { comment: string; parentId: string } = JSON.parse(req.body);
     const session = await getServerSession(req, res, authOptions);
-
+    // console.log(data);
     if (session && data) {
       await db.collection('comment').insertOne({
         comment: data.comment,

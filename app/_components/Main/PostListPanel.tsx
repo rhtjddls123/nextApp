@@ -88,7 +88,7 @@ export const columns: ColumnDef<postType>[] = [
       );
     },
     cell: ({ row }) => (
-      <Link href={`detail/${row.getValue('_id')}`}>
+      <Link href={`detail/${row.getValue('_id')}`} className=''>
         <Button className=' w-full overflow-hidden' variant={'link'}>
           {row.getValue('title')}
         </Button>

@@ -1,7 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { ObjectId } from 'mongodb';
-import { DispatchWithoutAction } from 'react';
+import { DispatchWithoutAction, useState } from 'react';
 
 type Props = {
   id: ObjectId;
@@ -9,9 +10,14 @@ type Props = {
 };
 
 const DeleteButton = ({ id, toggle }: Props) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
-    <button
+    <Button
+      variant={'outline'}
+      className=' w-fit'
+      disabled={isSubmitting}
       onClick={() => {
+        setIsSubmitting(true);
         fetch('/api/comment/delete', {
           method: 'DELETE',
           body: JSON.stringify(id),
@@ -23,7 +29,7 @@ const DeleteButton = ({ id, toggle }: Props) => {
       }}
     >
       삭제
-    </button>
+    </Button>
   );
 };
 
