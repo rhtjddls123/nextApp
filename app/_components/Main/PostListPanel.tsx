@@ -168,6 +168,7 @@ export function PostListPanel({ data }: Props) {
                 .then(async (r) => {
                   if (r.status === 200) {
                     router.refresh();
+                    table.resetRowSelection();
                     return r.json();
                   } else {
                     throw new Error(await r.json());
