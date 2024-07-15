@@ -21,6 +21,7 @@ const DetailPage = async ({ params }: Props) => {
       <div className='h-full flex flex-col'>
         <ScrollArea>
           <DeleteAndModify
+            author={result.author}
             href={`/modify/${params.id}`}
             deleteData={JSON.stringify(result)}
           ></DeleteAndModify>

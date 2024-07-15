@@ -162,9 +162,11 @@ const Modify = ({ user }: Props) => {
                         formData.append(key, value);
                       }
                     );
+                    console.log('ddddd', res.url);
                     await fetch(res.url, {
                       method: 'POST',
                       body: formData,
+                      mode: 'cors',
                     });
                   }
                 }}
