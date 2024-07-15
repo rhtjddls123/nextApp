@@ -16,7 +16,7 @@ const DeleteAndModify = ({ author, href, deleteData }: Props) => {
 
   return (
     <>
-      {session?.email === author ? (
+      {session?.user.email === author || session?.user.email === 'admin' ? (
         <div className=' flex justify-end mb-2'>
           <Button
             variant={'outline'}
