@@ -46,7 +46,6 @@ const ImageUpload = ({ register, isSubmitting }: Props) => {
             alt='img'
             className=' h-[100px] w-auto'
           ></Image>
-          <div>{src}</div>
         </>
       )}
       {res && file && (

@@ -9,12 +9,10 @@ export default async function handler(
     projectId: process.env.PROJECT_ID,
     credentials: {
       client_email: process.env.CLIENT_EMAIL,
-      private_key: process.env.PRIVATE_KEY,
+      private_key: process.env.PRIVATE_KEY?.replace(/(^"|"$)/g, ''),
     },
   });
 
-  console.log('쿼리?', req.query.file);
-  console.log(storage);
   const bucket = storage.bucket(process.env.BUCKET_NAME || '');
   const file = bucket.file(req.query.file as string);
   const options = {
