@@ -5,14 +5,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const pk = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n').replace(
+    /(^"|"$)/g,
+    ''
+  );
   const storage = new Storage({
     projectId: process.env.PROJECT_ID,
     credentials: {
       client_email: process.env.CLIENT_EMAIL,
-      private_key: process.env.PRIVATE_KEY?.replace(/(^"|"$)/g, ''),
+      private_key: pk,
     },
   });
 
+  console.log(pk);
   const bucket = storage.bucket(process.env.BUCKET_NAME || '');
   const file = bucket.file(req.query.file as string);
   const options = {
