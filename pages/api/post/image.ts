@@ -13,6 +13,8 @@ export default async function handler(
     },
   });
 
+  console.log('쿼리?', req.query.file);
+  console.log(storage);
   const bucket = storage.bucket(process.env.BUCKET_NAME || '');
   const file = bucket.file(req.query.file as string);
   const options = {

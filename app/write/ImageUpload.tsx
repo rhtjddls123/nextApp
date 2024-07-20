@@ -38,13 +38,16 @@ const ImageUpload = ({ register, isSubmitting }: Props) => {
         }}
       ></input>
       {src && (
-        <Image
-          src={src}
-          width={400}
-          height={400}
-          alt='img'
-          className=' h-[100px] w-auto'
-        ></Image>
+        <>
+          <Image
+            src={src}
+            width={400}
+            height={400}
+            alt='img'
+            className=' h-[100px] w-auto'
+          ></Image>
+          <div>{src}</div>
+        </>
       )}
       {res && file && (
         <input
